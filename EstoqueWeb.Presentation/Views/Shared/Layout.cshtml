@@ -1,0 +1,117 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json
+@using EstoqueWeb.Presentation.Models
+
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    //ler o conteudo JSON gravado na sessão
+    var json = HttpContextAccessor.HttpContext.Session.GetString("usuario");
+    //deserializar o conteudo do JSON
+    var usuario = JsonConvert.DeserializeObject<userIdentityModel>(json);
+}
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Projeto - EstoqueWeb</title>
+
+    <!--Folhas de estilo CSS-->
+    <link rel="stylesheet" href="~/css/bootstrap.css" />
+
+</head>
+<body>
+
+ <nav class="navbar navbar-expand-lg bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">ProdutosWEB</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/Home/Index">Pagina Inicial</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Produto/Cadastro">Cadastrar Produtos</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Menu Produtos
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="/Produto/Cadastro">Cadastro de Produtos</a></li>
+            <li><a class="dropdown-item" href="/Produto/Consulta">Consultar Produtos</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="/Produto/Relatorio">Relatório de Produtos</a></li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Account/UserData">Minha Conta</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link btn btn-outline-secundary" aria-current="page" href="/Account/Logout"
+            onclick="return confirm('Deseja realmente sair do sistema?');">Sair do Sistema</a>
+        </li>
+      </ul>
+
+      <form class="d-flex">
+          <span>Usuário:</span>
+          <strong >&nbsp;
+              @usuario.Nome
+          </strong>&nbsp;&nbsp;
+      </form>
+      <div>
+          <a class="nav-link btn btn-outline-secundary" aria-current="page" href="/Account/Logout"
+            onclick="return confirm('Deseja realmente sair do sistema?');">Sair do Sistema</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- exibir mensagens de sucesso -->
+    @if (TempData["MensagemSucesso"] != null)
+    {
+        <div class="alert alert-success Alert-dismissible fade show" role="alert">
+            <strong>Sucesso!</strong> @TempData["MensagemSucesso"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    else if (TempData["MensagemAlerta"] !=null)
+    {
+        <div class="alert alert-warning Alert-dismissible fade show" role="alert">
+            <strong>Aviso!</strong> @TempData["MensagemAlerta"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+    
+    else if (TempData["MensagemErro"] !=null)
+    {
+        <div class="alert alert-danger Alert-dismissible fade show" role="alert">
+            <strong>Erro!</strong> @TempData["MensagemErro"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="container mt-4">
+        <div class="card">
+            <div class="card-body">
+                <!--local onde é inserido o conteudo das paginas-->
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+
+    <!-- arquivos de extensão JS -->
+    <script src="~/js/bootstrap.js"></script>
+    <script> $(document).ready(function(){ $('.dropdown-toggle').dropdown(); }); </script>
+</body>
+</html>

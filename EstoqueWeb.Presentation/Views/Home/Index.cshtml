@@ -1,0 +1,147 @@
+﻿@model EstoqueWeb.Presentation.Models.DashbordViewModel
+
+@{
+    var dataInicio = Convert.ToDateTime(Model.DataInicio);
+    var dataFim = Convert.ToDateTime(Model.DataFim);
+}
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        <h3>Seja bem vindo ao <strong>- SISTEMA ESTOQUEWEB</strong></h3>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-md-12">
+        Período de datas de: <strong>@dataInicio.ToString("dd/MM/yyyy")</strong>
+        até: <strong>@dataFim.ToString("dd/MM/yyyy")</strong>
+    </div>
+</div>
+<div class="row mb-2">
+    <div class="col-md-8">
+        <strong>Quantidade de Produtos ativos e inativos:</strong>
+    </div>
+    <div class="col-md-4">
+        <strong>Quantidade de Produtos Totais:</strong>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-4">
+        <div class="card card-body bg-warning text-white">
+            <div class="row">
+                <div class="col-md-9">
+                    Ativos:
+                    <div class="col-md-3">
+                        <h5><strong>@Model.TotalAtivos</strong></h5>
+                    </div class>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-body bg-danger text-white">
+            <div class="row">
+                <div class="col-md-9">
+                    Inativos:
+                    <div class="col-md-3">
+                        <h5><strong>@Model.TotalInativos</strong></h5>
+                    </div class>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card card-body bg-primary text-white">
+            <div class="row">
+                <div class="col-md-9">
+                    Todos:
+                    <div class="col-md-3">
+                        <h5><strong>@Model.TotalGeral</strong></h5>
+                    </div class>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--desenvolvendo os gráficos-->
+<div class="row mb-5">
+    <div class="col-md-6">
+        <div id="graficoAtivosInativos"></div>
+    </div>
+    <div class="col-md-6">
+        <div id="graficoProdutosTotais"></div>
+    </div>
+</div>
+
+<!-- referencia do hifhcharts -->
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/variable-pie.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script>
+    //Gráfico de eventos por ativos e inativos 
+        var arrayAtivosInativos = [];
+
+        arrayAtivosInativos.push(['ATIVOS', @Model.TotalAtivos]);
+        arrayAtivosInativos.push(['INATIVOS', @Model.TotalInativos]);
+
+        new Highcharts.Chart({
+            chart: {
+                type: 'pie',
+                renderTo: 'graficoAtivosInativos'
+            },
+            title: {
+                text: 'Quantidade de produtos ativos / inativos'
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: '60%',
+                    dataLabels: {
+                        enable: true
+                    },
+                    showInLegend: true
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                data: arrayAtivosInativos
+            }],
+            colors: ['#0275d8', '#292b2c']
+        });
+
+        //Gráfico de totais de produtos 
+        var arrayAtivosInativos = [];
+
+        arrayAtivosInativos.push(['PRODUTOS', @Model.TotalGeral]);
+
+        new Highcharts.Chart({
+            chart: {
+                type: 'pie',
+                renderTo: 'graficoProdutosTotais'
+            },
+            title: {
+                text: 'Quantidade de produtos Geral'
+            },
+            plotOptions: {
+                pie: {
+                    innerSize: '60%',
+                    dataLabels: {
+                        enable: true
+                    },
+                    showInLegend: true
+                }
+            },
+            credits: {
+                enabled: false
+            },
+            series: [{
+                data: arrayAtivosInativos
+            }],
+            colors: ['#0275d8', '#292b2c']
+        });
+
+</script>

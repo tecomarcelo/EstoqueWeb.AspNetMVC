@@ -1,0 +1,77 @@
+﻿@model EstoqueWeb.Presentation.Models.ProdutoEdicaoViewModel
+
+<h5>Edição de Produto</h5>
+<p>
+    Utilize os campos para atualizar o produto.
+</p>
+<hr />
+
+@using (Html.BeginForm())
+{
+    <!--campo oculto-->
+    @Html.HiddenFor(model => model.Id)
+
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label>Nome:</label>
+        @Html.TextBoxFor(model => model.Nome, new {@class = "form-control"})
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Nome)
+        </span>
+      </div>
+      <div class="col-md-3">
+        <label>Preço:</label>
+        @Html.TextBoxFor(model => model.Preco, new {@class = "form-control"})
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Preco)
+        </span>
+      </div>
+      <div class="col-md-3">
+        <label>Quantidade:</label>
+                @Html.TextBoxFor(model => model.Quantidade, new {@class = "form-control"})
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Quantidade)
+        </span>
+      </div>
+      <div class="col-12">
+        <label>Descrição:</label>
+        @Html.TextBoxFor(model => model.Descricao, new {@class = "form-control", @placeHolder = "descreva as características do produto", })
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.Descricao)
+        </span>
+      </div>
+      <div class="col-md-4">
+        <label>Status</label>
+        <br />
+        @Html.RadioButtonFor(model => model.Ativo, 1)
+            <label>ATIVO</label> <br />
+        @Html.RadioButtonFor(model => model.Ativo, 2)
+            <label>INATIVO</label> <br />
+        <span class = "text-danger">
+            @Html.ValidationMessageFor(model => model.Ativo)
+        </span>
+      </div>
+      <div class="clearfix"></div>
+      <div class="col-md-3">
+        <label>Data Alteração:</label>
+                @Html.TextBoxFor(model => model.DataAlteracao, new {@readonly = "readonly", @tape = "date", @class = "form-control"})
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.DataAlteracao)
+        </span>
+      </div>
+      <div class="col-md-3">
+        <label>Data Inclusão:</label>
+                @Html.TextBoxFor(model => model.DataInclusao, new {@readonly = "readonly", @tape = "date", @class = "form-control"})
+        <span class="text-danger">
+            @Html.ValidationMessageFor(model => model.DataInclusao)
+        </span>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-success">Atualizar Produto</button>
+        <a href="/Produto/Consulta" class="btn btn-secondary">Cancelar</a>
+      </div>
+    </div>
+}
+
+
+

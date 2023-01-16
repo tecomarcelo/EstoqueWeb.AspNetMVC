@@ -1,0 +1,86 @@
+﻿@* classe de modelo utilizada nes pagina *@
+@model EstoqueWeb.Presentation.Models.ProdutoConsultaViewModel
+
+<h5>Consulta de Produtos</h5>
+<p>
+    Preencha os campos para consultar um produto na base.
+</p>
+<hr />
+
+@using (Html.BeginForm())
+{
+   <div class="row mb-3">
+    <div class="col-md-6">
+      <label>Nome:</label>
+      @Html.TextBoxFor(model => model.Nome, new { @tape = "nome", @class = "form-control",  @placeholder = "para todos coloque %" })
+      <span class = "text-danger">
+          @Html.ValidationMessageFor(model => model.Nome)
+      </span>
+    </div>
+    <div class="col-md-3">
+        <label>Status</label>
+        <br />
+        @Html.RadioButtonFor(model => model.Ativo, "1")
+            <label>ATIVO</label> <br />
+        @Html.RadioButtonFor(model => model.Ativo, "2")
+            <label>INATIVO</label> <br />
+        <span class = "text-danger">
+            @Html.ValidationMessageFor(model => model.Ativo)
+        </span>
+    </div>
+  </div>
+  
+  <div class="row mb-3">
+      <div class="col-12">
+          <button type="submit" class="btn btn-success">Pesquisar Produtos</button>
+      </div>
+  </div>
+}
+
+
+@if (Model != null && Model.Produtos != null && Model.Produtos.Count > 0)
+{
+    <table class="table table-hover">
+       <thead>
+           <tr>
+               <th>Nome do produto</th>
+               <th>Preço</th>
+               <th>Quatd.</th>
+               <th>Status</th>
+               <th>Operações</th>
+           </tr>
+       </thead>
+       <tbody>
+            @foreach(var item in Model.Produtos)
+            {
+                <tr>
+                    <td>@item.Nome</td>
+                    <td>@Convert.ToDecimal(item.Preco).ToString("C")</td>
+                    <td>@item.Quantidade</td>
+                    <td>@if (item.Ativo == 1)
+                        {
+                            <span class="text-success"><strong>ATIVO</strong></span>
+                        }
+                        else if(item.Ativo == 2)
+                        {
+                            <span class="text-danger"><strong>INATIVO</strong></span>
+                        }
+                    </td>
+                    <td>
+                        <a href="/Produto/Edicao?id=@item.Id" class="btn btn-primary brn-sm">Alterar</a>
+                        <a  class="btn btn-danger brn-sm" href="/Produto/Exclusao?id=@item.Id"
+                        onclick="return confirm('Deseja realmente exluir o produto: @item.Nome?')";>Excluir</a>
+                    </td>
+                </tr>
+            }
+       </tbody>
+       <tfoot>
+           <tr>
+               <td colspan="5">
+                   Quantidade de produtos: @Model.Produtos.Count
+               </td>
+           </tr>
+       </tfoot>
+    </table>
+}
+
